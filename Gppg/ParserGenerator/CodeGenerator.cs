@@ -360,6 +360,8 @@ namespace QUT.GPGen
             Console.WriteLine( "{2}{3} class {0}: ShiftReduceParser<{1}, {4}>", 
                 name, grammar.ValueTypeName, grammar.Visibility, grammar.PartialMark, grammar.LocationTypeName);
             Console.WriteLine('{');
+            if (!grammar.IsPartial)
+                Console.WriteLine($"{grammar.Visibility} {name}(Scanner s):base(s){{}}");
         }
 
 
