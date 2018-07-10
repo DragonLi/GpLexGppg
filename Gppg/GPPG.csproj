@@ -12,7 +12,7 @@
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-<!--    <OldToolsVersion>3.5</OldToolsVersion>-->
+    <!--    <OldToolsVersion>3.5</OldToolsVersion>-->
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -72,7 +72,7 @@
     <Compile Include="ParserGenerator\ParseHelper.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ParserGenerator\Parser.cs">
+    <Compile Include="ParserGenerator\parser.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ParserGenerator\ParserAction.cs">
@@ -87,7 +87,7 @@
     <Compile Include="ParserGenerator\ProductionItem.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ParserGenerator\scanaction.cs">
+    <Compile Include="ParserGenerator\ScanAction.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ParserGenerator\scanhelper.cs">
@@ -116,10 +116,7 @@
       <Link>ShiftReduceParserCode.cs</Link>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ShiftReduceParser\" />
-  </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio AllowExistingFolder="true" />
   </ProjectExtensions>
