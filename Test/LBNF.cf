@@ -1,0 +1,135 @@
+{-
+    BNF Converter: Language definition
+    Copyright (C) 2004  Author: Markus Forberg, Michael Pellauer, Aarne Ranta
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+-}
+
+-- A Grammar is a sequence of definitions
+
+MkGrammar . Grammar ::= DefList ;
+
+NilDefList  . DefList ::= ;
+ConsDefList . DefList ::= Def ";" DefList ;
+
+NilItemList  . ItemList ::= ;
+ConsItemList . ItemList ::= Item ItemList ;
+
+--The rules of the grammar
+Rule . Def ::= Label "." Cat "::=" ItemList ;
+
+-- Items
+Terminal  . Item ::= String ;
+NTerminal . Item ::= Cat ;
+
+-- Categories
+ListCat  . Cat ::= "[" Cat "]" ;
+IdCat    . Cat ::= Ident ;
+
+-- labels with or without profiles
+LabNoP   . Label ::= LabelId ;
+LabP     . Label ::= LabelId ProfItemList ;
+LabPF    . Label ::= LabelId LabelId ProfItemList ;
+LabF     . Label ::= LabelId LabelId ;
+
+-- functional labels
+Id       . LabelId ::= Ident ;
+Wild     . LabelId ::= "_" ;
+ListE    . LabelId ::= "[" "]" ;
+ListCons . LabelId ::= "(" ":" ")" ;
+ListOne  . LabelId ::= "(" ":" "[" "]" ")" ;
+
+-- profiles (= permutation and binding patterns)
+ProfIt   . ProfItem ::= "(" "[" IntListList "]" "," "[" IntegerList "]" ")" ;
+
+Ints     . IntList ::= "[" IntegerList "]" ;
+
+--separator Integer "," ;
+NilIntegerList    . IntegerList ::= ;
+LastIntegerList   . IntegerList ::= Integer ;
+ConsIntegerList   . IntegerList ::= Integer "," IntegerList ;
+
+--separator IntList "," ;
+NilIntListList    . IntListList ::= ;
+LastIntListList   . IntListList ::= IntList ;
+ConsIntListList   . IntListList ::= IntList "," IntListList ;
+
+--terminator nonempty ProfItem "" ;
+LastProfItemList . ProfItemList ::= ProfItem ;
+ConsProfItemList   . ProfItemList ::= ProfItem ProfItemList;
+
+-- Pragmas
+Comment  .  Def ::= "comment" String ;
+Comments .  Def ::= "comment" String String ;
+Internal .  Def ::= "internal" Label "." Cat "::=" ItemList ;
+Token.      Def ::= "token" Ident Reg ;
+PosToken.   Def ::= "position" "token" Ident Reg ;
+Entryp.     Def ::= "entrypoints" IdentList ;
+Separator.  Def ::= "separator" MinimumSize Cat String ;
+Terminator. Def ::= "terminator" MinimumSize Cat String ;
+Coercions.  Def ::= "coercions" Ident Integer ;
+Rules.      Def ::= "rules" Ident "::=" RHSList ;
+
+Layout.     Def ::= "layout" StringList ;
+LayoutStop. Def ::= "layout" "stop" StringList ;
+LayoutTop.  Def ::= "layout" "toplevel" ;
+
+--separator nonempty String "," ;
+LastStringList . StringList ::= String ;
+ConsStringList . StringList ::= String "," StringList ;
+
+--separator nonempty RHS "|" ;
+LastRHSList . RHSList ::= RHS ;
+ConsRHSList . RHSList ::= RHS "|" RHSList ;
+
+MkRHS. RHS ::= ItemList ;
+
+-- List size condition
+MNonempty.  MinimumSize ::= "nonempty" ;
+MEmpty.     MinimumSize ::=  ;
+
+-- regular expressions
+RSeq.   Reg2 ::= Reg2 Reg3 ;
+RAlt.   Reg1 ::= Reg1 "|" Reg2 ;
+RMinus. Reg1 ::= Reg2 "-" Reg2 ;
+
+RStar.  Reg3 ::= Reg3 "*" ;
+RPlus.  Reg3 ::= Reg3 "+" ;
+ROpt.   Reg3 ::= Reg3 "?" ;
+
+REps.   Reg3 ::= "eps" ;
+
+RChar.  Reg3 ::= Char ;           -- single character
+RAlts.  Reg3 ::= "[" String "]" ; -- list of alternative characters
+RSeqs.  Reg3 ::= "{" String "}" ; -- character sequence
+
+RDigit.  Reg3 ::= "digit" ;
+RLetter. Reg3 ::= "letter" ;
+RUpper.  Reg3 ::= "upper" ;
+RLower.  Reg3 ::= "lower" ;
+RAny.    Reg3 ::= "char" ;
+
+_. Reg  ::= Reg1 ;
+_. Reg1 ::= Reg2 ;
+_. Reg2 ::= Reg3 ;
+_. Reg3 ::= "(" Reg ")" ;
+
+-- list of categories in the entrypoint pragma
+LastIdentList .  IdentList ::= Ident ;
+ConsIdentList .  IdentList ::= Ident "," IdentList ;
+
+-- comments in BNF source
+comment "--" ;
+comment "{-" "-}" ;
