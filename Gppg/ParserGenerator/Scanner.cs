@@ -6,7 +6,7 @@
 //
 //  GPLEX Version:  1.2.2
 //  Machine:  fishkes-Mac-mini.local
-//  DateTime: 7/4/2018 10:19:39 AM
+//  DateTime: 7/12/2018 10:55:18 AM
 //  UserName: fish.ke
 //  GPLEX input file <gppg.lex - 7/4/2018 9:49:22 AM>
 //  GPLEX frame file <embedded resource>
@@ -157,6 +157,7 @@ namespace QUT.GPGen.Lexers
         int code;      // last code read
         int cCol;      // column number of code
         int lNum;      // current line number
+        int lineStartPos;
         //
         // The following instance variables are used, among other
         // things, for constructing the yylloc location objects.
@@ -621,6 +622,7 @@ int NextState() {
             public int rPos; // scanner.readPos saved value
             public int cCol;
             public int lNum; // Need this in case of backup over EOL.
+            public int lineStartPos;
             public int state;
             public int cChr;
         }
@@ -637,6 +639,7 @@ int NextState() {
 			internal int chrSv;
 			internal int cColSv;
 			internal int lNumSv;
+            internal int lineStartPos;
 		}
 
         // ==============================================================
@@ -656,6 +659,7 @@ int NextState() {
 			rslt.chrSv = this.code;
 			rslt.cColSv = this.cCol;
 			rslt.lNumSv = this.lNum;
+            rslt.lineStartPos = this.lineStartPos;
 			return rslt;
 		}
 
@@ -670,6 +674,7 @@ int NextState() {
 			this.code = value.chrSv;
 			this.cCol = value.cColSv;
 			this.lNum = value.lNumSv;
+            this.lineStartPos = value.lineStartPos;
         } 
         // =================== End Nested classes =======================
 
@@ -693,6 +698,7 @@ int NextState() {
                                // i.e. [\r\n\205\u2028\u2029]
             { 
                 cCol = -1;
+                lineStartPos = buffer.Pos;
                 lNum++;
             }
             readPos = buffer.Pos;
@@ -736,9 +742,9 @@ int NextState() {
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         int Peek()
         {
-            int rslt, codeSv = code, cColSv = cCol, lNumSv = lNum, bPosSv = buffer.Pos;
+            int rslt, codeSv = code, cColSv = cCol, lNumSv = lNum, bPosSv = buffer.Pos,lStart=lineStartPos;
             GetCode(); rslt = code;
-            lNum = lNumSv; cCol = cColSv; code = codeSv; buffer.Pos = bPosSv;
+            lNum = lNumSv; cCol = cColSv; code = codeSv; buffer.Pos = bPosSv;lineStartPos = lStart;
             return rslt;
         }
 
@@ -757,6 +763,7 @@ int NextState() {
             this.buffer = ScanBuff.GetBuffer(source);
             this.buffer.Pos = offset;
             this.lNum = 0;
+            this.lineStartPos = 0;
             this.code = '\n'; // to initialize yyline, yycol and lineStart
             GetCode();
         }
@@ -772,6 +779,7 @@ int NextState() {
             this.buffer = ScanBuff.GetBuffer(source);
             this.code = '\n'; // to initialize yyline, yycol and lineStart
             this.lNum = 0;
+            this.lineStartPos = 0;
             GetCode();
         }
 
@@ -788,6 +796,7 @@ int NextState() {
         {
             this.buffer = ScanBuff.GetBuffer(source);
             this.lNum = 0;
+            this.lineStartPos = 0;
             this.code = '\n'; // to initialize yyline, yycol and lineStart
             GetCode();
         }
@@ -859,10 +868,39 @@ int NextState() {
         int yypos { get { return tokPos; } }
         
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        int yyline { get { return tokLin; } }
-        
+        public int yyline { get { return tokLin; } }
+
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        int yycol { get { return tokCol; } }
+        public int yycol { get { return tokCol; } }
+
+        public string LastErrorStr()
+        {
+            var sb = new StringBuilder();
+            sb.Append("at line:").Append(tokLin.ToString()).Append(",column:").AppendLine(tokCol.ToString());
+            int save = buffer.Pos;
+            buffer.Pos = lineStartPos;
+            int ch = buffer.Read();
+            while(ch != '\n' && ch != ScanBuff.EndOfFile)
+            {
+                sb.Append(((char)ch));
+                ch = buffer.Read();
+            }
+            buffer.Pos = save;
+
+            sb.AppendLine();
+            var indentNum = tokPos - lineStartPos;
+            for (int i = 0; i < indentNum;i++){
+                sb.Append(" ");
+            }
+            sb.AppendLine("^");
+            for (int i = 0; i < indentNum; i++)
+            {
+                sb.Append(" ");
+            }
+            sb.AppendLine("|");
+
+            return sb.ToString();
+        }
 
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "yytext")]
@@ -1320,6 +1358,7 @@ yylloc = new LexSpan(tokLin, tokCol, tokELin, tokECol, tokPos, tokEPos, buffer);
             ctx.rPos  = readPos;
             ctx.cCol  = cCol;
             ctx.lNum  = lNum;
+            ctx.lineStartPos = lineStartPos;
             ctx.state = state;
             ctx.cChr  = code;
         }
@@ -1329,6 +1368,7 @@ yylloc = new LexSpan(tokLin, tokCol, tokELin, tokECol, tokPos, tokEPos, buffer);
             readPos = ctx.rPos;
             cCol  = ctx.cCol;
             lNum  = ctx.lNum;
+            lineStartPos = ctx.lineStartPos;
             state = ctx.state;
             code  = ctx.cChr;
         }
