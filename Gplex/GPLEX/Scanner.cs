@@ -6,7 +6,7 @@
 //
 //  GPLEX Version:  1.2.2
 //  Machine:  fishkes-Mac-mini.local
-//  DateTime: 7/4/2018 10:33:09 AM
+//  DateTime: 7/12/2018 9:19:06 AM
 //  UserName: fish.ke
 //  GPLEX input file <gplex.lex - 7/4/2018 9:48:48 AM>
 //  GPLEX frame file <embedded resource>
@@ -986,10 +986,31 @@ int NextState() {
         int yypos { get { return tokPos; } }
         
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        int yyline { get { return tokLin; } }
-        
+        public int yyline { get { return tokLin; } }
+
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        int yycol { get { return tokCol; } }
+        public int yycol { get { return tokCol; } }
+
+        public string LastErrorStr()
+        {
+            var sb = new StringBuilder();
+            sb.Append("at line:").Append(tokLin.ToString()).Append(",column:").AppendLine(tokCol.ToString());
+            int save = buffer.Pos;
+            buffer.Pos = tokPos;
+            int ch = buffer.Read();
+            while(ch != '\n' && ch != ScanBuff.EndOfFile)
+            {
+                sb.Append(((char)ch));
+                ch = buffer.Read();
+            }
+            buffer.Pos = save;
+
+            sb.AppendLine();
+            sb.AppendLine("^");
+            sb.AppendLine("|");
+
+            return sb.ToString();
+        }
 
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "yytext")]
