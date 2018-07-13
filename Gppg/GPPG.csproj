@@ -6,7 +6,7 @@
     <ProjectGuid>{AF1F8BCF-34FC-4A5E-9D45-BCC6031720BC}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <NoStandardLibraries>false</NoStandardLibraries>
-    <AssemblyName>Gppg</AssemblyName>
+    <AssemblyName>gppg</AssemblyName>
     <RootNamespace>QUT.Gppg</RootNamespace>
     <FileUpgradeFlags>
     </FileUpgradeFlags>

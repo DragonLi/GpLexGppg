@@ -6,7 +6,7 @@
     <ProjectGuid>{440C9EA8-409C-4B1D-88B7-A2B5FFF87700}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <NoStandardLibraries>false</NoStandardLibraries>
-    <AssemblyName>Gplex</AssemblyName>
+    <AssemblyName>gplex</AssemblyName>
     <RootNamespace>QUT.Gplex</RootNamespace>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
