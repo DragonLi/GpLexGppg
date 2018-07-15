@@ -455,12 +455,6 @@ using System.Diagnostics.CodeAnalysis;
                 sb.Append(" ");
             }
             sb.AppendLine("^");
-            for (int i = 0; i &lt; indentNum; i++)
-            {
-                sb.Append(" ");
-            }
-            sb.AppendLine("|");
-
             return sb.ToString();
         }
 
