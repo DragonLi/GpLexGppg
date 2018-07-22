@@ -6,7 +6,7 @@
 //
 //  GPLEX Version:  1.2.2
 //  Machine:  fishkes-Mac-mini.local
-//  DateTime: 7/12/2018 10:10:25 AM
+//  DateTime: 7/22/2018 4:58:52 PM
 //  UserName: fish.ke
 //  GPLEX input file <gplex.lex - 7/4/2018 9:48:48 AM>
 //  GPLEX frame file <embedded resource>
@@ -1020,12 +1020,6 @@ int NextState() {
                 sb.Append(" ");
             }
             sb.AppendLine("^");
-            for (int i = 0; i < indentNum; i++)
-            {
-                sb.Append(" ");
-            }
-            sb.AppendLine("|");
-
             return sb.ToString();
         }
 

@@ -63,6 +63,8 @@ namespace QUT.GPGen.Lexers
                     return Token.kwYYSTYPE;
                 case "YYLTYPE":
                     return Token.kwYYLTYPE;
+                case "ScanBuffType":
+                    return Token.kwScanBuffType;
                 default:
                     Error( 50, TokenSpan() );
                     return Token.errTok;
