@@ -14,6 +14,9 @@
 %visibility internal
 
 %YYLTYPE LexSpan
+
+%ScanBuffType QUT.GPGen.Lexers.Scanner
+
 %partial
 %union { public int iVal; 
          public List<string> stringList;
@@ -35,7 +38,7 @@
 %token kwShareTokens "%sharetokens", kwImportTokens "%importtokens"
 %token kwParsertype "%parsertype", kwTokentype "%tokentype", kwScanbasetype "%scanbasetype"  
 %token kwUsing "%using", kwVisibility "%visibility" 
-%token kwYYSTYPE "%YYSTYPE", kwYYLTYPE "%YYLTYPE"
+%token kwYYSTYPE "%YYSTYPE", kwYYLTYPE "%YYLTYPE", kwScanBuffType "%ScanBuffType"
 %token kwCsTokenFile "%cstokenfile"
 %token maxParseToken errTok
 
@@ -167,6 +170,9 @@ Declaration
 
     | kwYYLTYPE TypeConstructor
 						{ grammar.LocationTypeName = @2.ToString(); }
+
+    | kwScanBuffType TypeConstructor
+                        { grammar.ScanBuffTypeName = @2.ToString(); }
     ;
     
 TypeNameOpt

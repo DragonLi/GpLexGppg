@@ -51,7 +51,7 @@ internal class ScanObj {
 }
 
 [GeneratedCodeAttribute( "Gardens Point Parser Generator", "1.5.2")]
-internal partial class Parser: ShiftReduceParser<int, LexSpan>
+internal partial class Parser: ShiftReduceParser<int, LexSpan, QUT.Gplex.Lexer.Scanner>
 {
 #pragma warning disable 649
   private static Dictionary<int, string> aliases;

@@ -8,6 +8,8 @@
 
 %YYLTYPE LexSpan
 
+%ScanBuffType QUT.Gplex.Lexer.Scanner
+
 %partial
 %visibility internal
 %output=Parser.cs

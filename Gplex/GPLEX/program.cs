@@ -118,6 +118,7 @@ namespace QUT.Gplex
             Console.WriteLine("            /noParser        -- create stand-alone scanner");
             Console.WriteLine("            /noPersistBuffer -- do not retain input buffer throughout processing");
             Console.WriteLine("            /noEmbedBuffers  -- write buffers to separate GplexBuffers file");
+            Console.WriteLine("            /useShareBuff    -- use shared GplexBuffers definitions in ShiftReduceParser.dll");
             Console.WriteLine("            /out:path        -- send output to filename \"path\"");
             Console.WriteLine("            /out:-           -- send output to Console.Out");
             Console.WriteLine("            /parseOnly       -- syntax check only, do not create automaton");

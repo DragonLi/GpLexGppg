@@ -1170,7 +1170,7 @@ namespace QUT.Gplex.Automaton
                             }
                             else if (selector == "usingDcl")
                             {
-                                if (!myTask.EmbedBuffers)
+                                if (!myTask.EmbedBuffers && !myTask.UseShareBuffers)
                                     sWrtr.WriteLine("using QUT.GplexBuffers;");
 
                                 foreach (LexSpan s in myTask.aast.usingStrs)
@@ -1254,7 +1254,7 @@ namespace QUT.Gplex.Automaton
                             }
                             else if (selector == "embeddedBuffers")
                             {
-                                if (myTask.EmbedBuffers)
+                                if (myTask.EmbedBuffers && !myTask.UseShareBuffers)
                                     TaskState.EmbedBufferCode(sWrtr);
                             }
                             else if (selector == "bufferCtor")

@@ -51,6 +51,7 @@ namespace QUT.GPGen
         internal string ScanBaseName = "ScanBase";
         internal string ValueTypeName;
         internal string LocationTypeName = "LexLocation";
+        internal string ScanBuffTypeName = "ScanBase";
         internal string PartialMark { get { return (IsPartial ? " partial" : ""); } }
         internal LexSpan ValueTypeNameSpan;
 

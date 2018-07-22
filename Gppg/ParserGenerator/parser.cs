@@ -57,7 +57,7 @@ internal class ScanObj {
 }
 
 [GeneratedCodeAttribute( "Gardens Point Parser Generator", "1.5.2")]
-internal partial class Parser: ShiftReduceParser<ValueType, LexSpan>
+internal partial class Parser: ShiftReduceParser<ValueType, LexSpan,QUT.GPGen.Lexers.Scanner>
 {
   // Verbatim content from gppg.y - 7/4/2018 9:49:22 AM
 /*

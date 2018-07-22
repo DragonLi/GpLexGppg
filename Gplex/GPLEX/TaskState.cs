@@ -61,6 +61,7 @@ namespace QUT.Gplex.Automaton
         bool emitVer;
         bool files = true;
         bool embedBuffers = true;
+        bool useShareBuffers;
         bool errorsToConsole;
         //bool utf8default;
         bool compressMapExplicit;
@@ -127,6 +128,7 @@ namespace QUT.Gplex.Automaton
         internal bool HasParser { get { return hasParser; } }
         internal bool ChrClasses { get { return charClasses; } }
         internal bool EmbedBuffers { get { return embedBuffers; } }
+        internal bool UseShareBuffers { get { return useShareBuffers; }}
         internal bool CaseAgnostic { get { return caseAgnostic; } }
         internal bool EmitInfoHeader { get { return emitInfo; } }
 
@@ -209,6 +211,8 @@ namespace QUT.Gplex.Automaton
                 return OptionState.needCodepageHelp;
             else if (arg.StartsWith("CODEPAGE:", StringComparison.Ordinal))
                 fallbackCodepage = CodePageHandling.GetCodePage(option);
+            else if (arg.StartsWith("USESHAREBUFF", StringComparison.Ordinal))
+                useShareBuffers = true;
             else
             {
                 bool negate = arg.StartsWith("NO", StringComparison.Ordinal);
@@ -596,7 +600,7 @@ namespace QUT.Gplex.Automaton
                                     TextWriter outputWrtr = OutputWriter();
                                     dfsa.EmitScanner(frameRdr, outputWrtr);
 
-                                    if (!embedBuffers)
+                                    if (!embedBuffers && !useShareBuffers)
                                         CopyBufferCode();
                                     // Clean up!
                                     if (frameRdr != null) 

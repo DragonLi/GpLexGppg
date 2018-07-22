@@ -7,6 +7,28 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GPPG", "Gppg\GPPG.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShiftReduceParser", "ShiftReduceParser\ShiftReduceParser.csproj", "{6A0A94A6-9180-492B-8E7C-E22474577290}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "gplexSpec", "gplexSpec", "{C4B6CBD7-1175-4D7D-B1B3-97DE5053D960}"
+	ProjectSection(SolutionItems) = preProject
+		Gplex\SpecFiles\generateAll.sh = Gplex\SpecFiles\generateAll.sh
+		Gplex\SpecFiles\GenerateResource.cs = Gplex\SpecFiles\GenerateResource.cs
+		Gplex\SpecFiles\gplex.lex = Gplex\SpecFiles\gplex.lex
+		Gplex\SpecFiles\gplex.y = Gplex\SpecFiles\gplex.y
+		Gplex\SpecFiles\GplexBuffers.txt = Gplex\SpecFiles\GplexBuffers.txt
+		Gplex\SpecFiles\gplexx.frame = Gplex\SpecFiles\gplexx.frame
+		Gplex\SpecFiles\guesser.frame = Gplex\SpecFiles\guesser.frame
+		Gplex\SpecFiles\Guesser.lex = Gplex\SpecFiles\Guesser.lex
+		Gplex\SpecFiles\LookaheadHelper.cs = Gplex\SpecFiles\LookaheadHelper.cs
+		Gplex\SpecFiles\ResourceHeader.txt = Gplex\SpecFiles\ResourceHeader.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "gppgSpec", "gppgSpec", "{BCA286C9-1633-4ABA-98FA-DA834C2322B8}"
+	ProjectSection(SolutionItems) = preProject
+		Gppg\ParserGenerator\SpecFiles\generateAll.sh = Gppg\ParserGenerator\SpecFiles\generateAll.sh
+		Gppg\ParserGenerator\SpecFiles\gppg.lex = Gppg\ParserGenerator\SpecFiles\gppg.lex
+		Gppg\ParserGenerator\SpecFiles\gppg.y = Gppg\ParserGenerator\SpecFiles\gppg.y
+		Gppg\ParserGenerator\SpecFiles\ScanAction.lex = Gppg\ParserGenerator\SpecFiles\ScanAction.lex
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
