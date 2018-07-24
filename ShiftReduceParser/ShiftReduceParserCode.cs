@@ -609,10 +609,6 @@ namespace QUT.Gppg {
     /// </summary>
 #if EXPORT_GPPG
     public class LexLocation : IMerge<LexLocation>
-#else
-    [SuppressMessage( "Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses" )]
-    internal class LexLocation : IMerge<LexLocation>
-#endif
  {
         internal int startLine;       // start line of span
         internal int startColumn;     // start column of span
@@ -707,6 +703,7 @@ namespace QUT.Gppg {
         public LexLocation( int sl, int sc, int el, int ec ) { startLine = sl; startColumn = sc; endLine = el; endColumn = ec; }
 
     }
+#endif
 
     /// <summary>
     /// Abstract scanner class that GPPG expects its scanners to 
@@ -920,7 +917,7 @@ namespace QUT.Gppg {
         internal bool IsEmpty() { return tos == 0; }
     }
 
-
+#if EXPORT_GPPG
     // Code copied from GPLEX embedded resource
     [Serializable]
     public class BufferException : Exception
@@ -1622,5 +1619,5 @@ namespace QUT.Gppg {
 #endif // !NOFILES
 
     // End of code copied from embedded resource
-
+#endif
 }
