@@ -6,7 +6,7 @@
 //
 //  GPLEX Version:  1.2.2
 //  Machine:  fishkes-Mac-mini.local
-//  DateTime: 7/22/2018 4:59:33 PM
+//  DateTime: 7/24/2018 8:22:49 AM
 //  UserName: fish.ke
 //  GPLEX input file <gppg.lex - 7/4/2018 9:49:22 AM>
 //  GPLEX frame file <embedded resource>
@@ -865,36 +865,16 @@ int NextState() {
         }
         
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        int yypos { get { return tokPos; } }
+        public int yyLineStartPos { get { return lineStartPos; } }
+
+        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        public int yypos { get { return tokPos; } }
         
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         public int yyline { get { return tokLin; } }
 
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         public int yycol { get { return tokCol; } }
-
-        public string LastErrorStr()
-        {
-            var sb = new StringBuilder();
-            sb.Append("at line:").Append(tokLin.ToString()).Append(",column:").AppendLine(tokCol.ToString());
-            int save = buffer.Pos;
-            buffer.Pos = lineStartPos;
-            int ch = buffer.Read();
-            while(ch != '\n' && ch != ScanBuff.EndOfFile)
-            {
-                sb.Append(((char)ch));
-                ch = buffer.Read();
-            }
-            buffer.Pos = save;
-
-            sb.AppendLine();
-            var indentNum = tokPos - lineStartPos;
-            for (int i = 0; i < indentNum;i++){
-                sb.Append(" ");
-            }
-            sb.AppendLine("^");
-            return sb.ToString();
-        }
 
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "yytext")]
