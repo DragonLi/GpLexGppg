@@ -668,6 +668,18 @@ namespace QUT.Gppg {
         }
 
         /// <summary>
+        /// Gets the start index in scan buffer.
+        /// </summary>
+        /// <value>The start index.</value>
+        public int StartIndex { get { return startIndex; } }
+
+        /// <summary>
+        /// Gets the end index in scan buffer.
+        /// </summary>
+        /// <value>The end index.</value>
+        public int EndIndex { get { return endIndex; } }
+
+        /// <summary>
         /// The line at which the text span starts.
         /// </summary>
         public int StartLine { get { return startLine; } }
