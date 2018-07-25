@@ -632,6 +632,10 @@ namespace QUT.Gppg {
             return new LexLocation(startLine, startColumn, end.endLine, end.endColumn, startIndex, end.endIndex, buffer);
         }
 
+        public string HintLine(){
+            return buffer.HintAt(this);
+        }
+
         /// <summary>
         /// Get a short span from the first line of this span.
         /// </summary>
@@ -955,6 +959,55 @@ namespace QUT.Gppg {
         public abstract int Pos { get; set; }
         public abstract int Read();
         public virtual void Mark() { }
+
+        public int ReadBackward()
+        {
+            if (Pos == 0)
+                return -1;
+            --Pos;
+            var save = Pos;
+            var result = Read();
+            Pos = save;
+            return result;
+        }
+
+        public int StartLineOf(int index){
+            var save = Pos;
+            Pos = index;
+            var ch = ReadBackward();
+            while (ch != -1 && ch != '\n')
+            {
+                ch = ReadBackward();
+            }
+            var lineStartPos = ch == -1 ? 0 : Pos + 1;
+            Pos = save;
+            return lineStartPos;
+        }
+
+        public string HintAt(LexLocation loc)
+        {
+            return HintAt(loc.StartLine, loc.StartColumn, loc.StartIndex, StartLineOf(loc.StartIndex));
+        }
+
+        public string HintAt(int tokLin, int tokCol, int tokPos, int lineStartPos)
+        {
+            var sb = new StringBuilder();
+            sb.Append("at line:").Append(tokLin.ToString()).Append(",column:").AppendLine(tokCol.ToString());
+            int save = Pos;
+            Pos = lineStartPos;
+            int ch = Read();
+            while (ch != '\n' && ch != ScanBuff.EndOfFile)
+            {
+                sb.Append(((char)ch));
+                ch = Read();
+            }
+            Pos = save;
+            sb.AppendLine();
+            var indentNum = tokPos - lineStartPos;
+            for (int i = 0; i < indentNum; i++) sb.Append(" ");
+            sb.AppendLine("^");
+            return sb.ToString();
+        }
 
         public abstract string GetString(int begin, int limit);
 
@@ -1292,7 +1345,6 @@ namespace QUT.Gppg {
             get { return bPos; }
             set { bPos = value; }
         }
-
 
         /// <summary>
         /// Read returns the ordinal number of the next char, or 
