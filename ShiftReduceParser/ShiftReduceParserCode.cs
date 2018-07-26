@@ -3,12 +3,14 @@
 // (see accompanying GPPGcopyright.rtf)
 
 using System;
+using System.Collections;
 using System.IO;
 using System.Text;
 using System.Globalization;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace QUT.Gppg {
     /// <summary>
@@ -608,6 +610,64 @@ namespace QUT.Gppg {
     /// will expect to deal with this type.
     /// </summary>
 #if EXPORT_GPPG
+    public class SpecialList<T>:IEnumerable<T>
+    {
+        private T[] _lst;
+        private LinkedList<T> _linked;
+
+        public SpecialList()
+        {
+            _linked = new LinkedList<T>();
+        }
+
+        public void AddFirst(T item)
+        {
+            _linked.AddFirst(item);
+        }
+
+        public void AddLast(T item)
+        {
+            _linked.AddLast(item);
+        }
+
+        private void CheckState(){
+            if (_lst == null)
+            {
+                _lst=new T[_linked.Count];
+                _linked.CopyTo(_lst, 0);
+                _linked = null;
+            }
+        }
+
+        public int Count  {
+            get{
+                CheckState();
+                return _lst.Length;
+            }
+        }
+
+        public T this[int index]
+        {
+            get
+            {
+                CheckState();
+                return _lst[index];
+            }
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            CheckState();
+            return _lst.AsEnumerable().GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            CheckState();
+            return _lst.GetEnumerator();
+        }
+    }
+    
     public class LexLocation : IMerge<LexLocation>
  {
         internal int startLine;       // start line of span
