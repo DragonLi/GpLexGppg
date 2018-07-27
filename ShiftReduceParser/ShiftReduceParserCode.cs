@@ -10,7 +10,7 @@ using System.Globalization;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace QUT.Gppg {
     /// <summary>
@@ -654,11 +654,16 @@ namespace QUT.Gppg {
                 return _lst[index];
             }
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private IEnumerable<T> AsEnumerable(IEnumerable<T> ts){
+            return ts;
+        }
 
         public IEnumerator<T> GetEnumerator()
         {
             CheckState();
-            return _lst.AsEnumerable().GetEnumerator();
+            return AsEnumerable(_lst).GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
