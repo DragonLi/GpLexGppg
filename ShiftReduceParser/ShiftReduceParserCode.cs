@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace QUT.Gppg {
     /// <summary>
@@ -610,6 +611,11 @@ namespace QUT.Gppg {
     /// will expect to deal with this type.
     /// </summary>
 #if EXPORT_GPPG
+    [StructLayout(LayoutKind.Sequential, Size = 1)]
+    public struct Void
+    {
+    }
+
     public class SpecialList<T>:IEnumerable<T>
     {
         private T[] _lst;
